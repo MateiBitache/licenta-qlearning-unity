@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 public class QLearningAgent : MonoBehaviour
@@ -60,6 +61,11 @@ public class QLearningAgent : MonoBehaviour
         epsilon = Mathf.Max(minEpsilon, epsilon * epsilonDecay);
     }
 
+    public void SetEpsilon(float value)
+    {
+        epsilon = value;
+    }
+
     public float[,] GetQTable()
     {
         return q;
@@ -72,6 +78,32 @@ public class QLearningAgent : MonoBehaviour
         actionCount = table.GetLength(1);
     }
 
+    public void SaveQTable(string path)
+    {
+        QTableData data = new QTableData();
+        data.states = stateCount;
+        data.actions = actionCount;
+        data.values = new float[stateCount * actionCount];
+        for (int s = 0; s < stateCount; s++)
+            for (int a = 0; a < actionCount; a++)
+                data.values[s * actionCount + a] = q[s, a];
+        File.WriteAllText(path, JsonUtility.ToJson(data));
+    }
+
+    public bool LoadQTable(string path)
+    {
+        if (!File.Exists(path))
+            return false;
+        QTableData data = JsonUtility.FromJson<QTableData>(File.ReadAllText(path));
+        stateCount = data.states;
+        actionCount = data.actions;
+        q = new float[stateCount, actionCount];
+        for (int s = 0; s < stateCount; s++)
+            for (int a = 0; a < actionCount; a++)
+                q[s, a] = data.values[s * actionCount + a];
+        return true;
+    }
+
     private float MaxQ(int state)
     {
         float max = q[state, 0];
@@ -81,5 +113,13 @@ public class QLearningAgent : MonoBehaviour
                 max = q[state, a];
         }
         return max;
+    }
+
+    [System.Serializable]
+    private class QTableData
+    {
+        public int states;
+        public int actions;
+        public float[] values;
     }
 }
