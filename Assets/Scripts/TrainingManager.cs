@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ public class TrainingManager : MonoBehaviour
     public float agentHeight = 0.6f;
     public bool trainOnStart = true;
     public string saveFileName = "qtable.json";
+    public string resultsFolderName = "Results";
+    public int chartSmoothWindow = 50;
 
     [System.NonSerialized] public List<float> rewardHistory = new List<float>();
     [System.NonSerialized] public List<int> stepHistory = new List<int>();
@@ -84,10 +87,8 @@ public class TrainingManager : MonoBehaviour
                 LogProgress(e + 1);
         }
 
-        string path = Path.Combine(Application.persistentDataPath, saveFileName);
-        agent.SaveQTable(path);
+        FinishTraining();
         LogProgress(episodes);
-        Debug.Log("Training finished. Q-table saved to " + path);
     }
 
     public void Train()
@@ -126,6 +127,30 @@ public class TrainingManager : MonoBehaviour
             stepHistory.Add(steps);
             successHistory.Add(environment.AgentCell == environment.goalCell ? 1 : 0);
         }
+
+        FinishTraining();
+    }
+
+    private void FinishTraining()
+    {
+        string path = Path.Combine(Application.persistentDataPath, saveFileName);
+        agent.SaveQTable(path);
+        ExportResults();
+        Debug.Log("Training finished. Q-table saved to " + path);
+    }
+
+    private void ExportResults()
+    {
+        string dir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, resultsFolderName);
+        Directory.CreateDirectory(dir);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("episode,reward,steps,success");
+        for (int i = 0; i < rewardHistory.Count; i++)
+            sb.AppendLine((i + 1) + "," + rewardHistory[i].ToString("0.####") + "," + stepHistory[i] + "," + successHistory[i]);
+        File.WriteAllText(Path.Combine(dir, "training_rewards.csv"), sb.ToString());
+
+        ChartRenderer.RenderRewardCurve(rewardHistory, Path.Combine(dir, "learning_curve.png"), 900, 500, chartSmoothWindow);
     }
 
     private void MoveAgentVisual(Vector2Int cell)
