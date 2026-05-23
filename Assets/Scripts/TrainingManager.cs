@@ -12,12 +12,12 @@ public class TrainingManager : MonoBehaviour
     public Transform agentVisual;
     public Text statsText;
 
-    public int episodes = 2500;
+    public int episodes = 2000;
     public int maxStepsPerEpisode = 200;
-    public int stepsPerFrame = 30;
+    public float speed = 20f;
     public int logEvery = 200;
     public float agentHeight = 0.6f;
-    public bool trainOnStart = true;
+    public bool trainOnStart = false;
     public string saveFileName = "qtable.json";
     public string resultsFolderName = "Results";
     public int chartSmoothWindow = 50;
@@ -25,15 +25,54 @@ public class TrainingManager : MonoBehaviour
     [System.NonSerialized] public List<float> rewardHistory = new List<float>();
     [System.NonSerialized] public List<int> stepHistory = new List<int>();
     [System.NonSerialized] public List<int> successHistory = new List<int>();
+    [System.NonSerialized] public bool busy;
+
+    private Coroutine active;
 
     private void Start()
     {
         if (trainOnStart)
-            StartCoroutine(TrainRoutine());
+            StartTraining();
+    }
+
+    public void StartTraining()
+    {
+        if (busy)
+            return;
+        active = StartCoroutine(TrainRoutine());
+    }
+
+    public void RunTrained()
+    {
+        if (busy)
+            return;
+        active = StartCoroutine(RunTrainedRoutine());
+    }
+
+    public void ResetDemo()
+    {
+        if (active != null)
+            StopCoroutine(active);
+        busy = false;
+        if (environment == null)
+            environment = FindFirstObjectByType<GridEnvironment>();
+        if (agent == null)
+            agent = FindFirstObjectByType<QLearningAgent>();
+        agent.Initialize(environment.StateCount, environment.ActionCount);
+        environment.ResetEnvironment();
+        MoveAgentVisual(environment.AgentCell);
+        if (statsText != null)
+            statsText.text = "Untrained agent\nPress Train to learn";
+    }
+
+    public void SetSpeed(float value)
+    {
+        speed = Mathf.Max(1f, value);
     }
 
     public IEnumerator TrainRoutine()
     {
+        busy = true;
         if (environment == null)
             environment = FindFirstObjectByType<GridEnvironment>();
         if (agent == null)
@@ -68,7 +107,7 @@ public class TrainingManager : MonoBehaviour
                 MoveAgentVisual(environment.AgentCell);
 
                 budget++;
-                if (budget >= stepsPerFrame)
+                if (budget >= Mathf.Max(1, (int)speed))
                 {
                     budget = 0;
                     UpdateStats(e + 1, total, steps, reached);
@@ -89,6 +128,49 @@ public class TrainingManager : MonoBehaviour
 
         FinishTraining();
         LogProgress(episodes);
+        busy = false;
+    }
+
+    public IEnumerator RunTrainedRoutine()
+    {
+        busy = true;
+        if (environment == null)
+            environment = FindFirstObjectByType<GridEnvironment>();
+        if (agent == null)
+            agent = FindFirstObjectByType<QLearningAgent>();
+
+        string path = Path.Combine(Application.persistentDataPath, saveFileName);
+        if (!agent.LoadQTable(path))
+        {
+            if (statsText != null)
+                statsText.text = "No saved Q-table\nTrain first";
+            busy = false;
+            yield break;
+        }
+
+        agent.SetEpsilon(0f);
+        int state = environment.ResetEnvironment();
+        MoveAgentVisual(environment.AgentCell);
+        float total = 0f;
+        int steps = 0;
+        bool done = false;
+
+        while (!done && steps < maxStepsPerEpisode)
+        {
+            int action = agent.GreedyAction(state);
+            int nextState;
+            float reward;
+            environment.Step(action, out nextState, out reward, out done);
+            state = nextState;
+            total += reward;
+            steps++;
+            MoveAgentVisual(environment.AgentCell);
+            UpdateTrainedStats(total, steps, environment.AgentCell == environment.goalCell);
+            yield return new WaitForSeconds(1f / speed);
+        }
+
+        UpdateTrainedStats(total, steps, environment.AgentCell == environment.goalCell);
+        busy = false;
     }
 
     public void Train()
@@ -171,6 +253,18 @@ public class TrainingManager : MonoBehaviour
             "Reward: " + reward.ToString("0.00") + "\n" +
             "Steps: " + steps + "\n" +
             "Epsilon: " + agent.Epsilon.ToString("0.000") + "\n" +
+            "Reached goal: " + (reached ? "yes" : "no");
+    }
+
+    private void UpdateTrainedStats(float reward, int steps, bool reached)
+    {
+        if (statsText == null)
+            return;
+        statsText.text =
+            "Trained run\n" +
+            "Reward: " + reward.ToString("0.00") + "\n" +
+            "Steps: " + steps + "\n" +
+            "Epsilon: 0.000\n" +
             "Reached goal: " + (reached ? "yes" : "no");
     }
 
