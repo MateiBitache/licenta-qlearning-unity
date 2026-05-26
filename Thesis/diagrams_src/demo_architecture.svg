@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="660" viewBox="0 0 960 660" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="960" height="660" fill="#ffffff"/>
+  <defs>
+    <marker id="ar" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <text x="480" y="38" text-anchor="middle" font-size="23" font-weight="700" fill="#1a1a2e">Demo Architecture</text>
+
+  <rect x="360" y="70" width="240" height="70" rx="10" fill="#dce6f7" stroke="#3257a0" stroke-width="2.5"/>
+  <text x="480" y="100" text-anchor="middle" font-size="18" font-weight="700" fill="#22386e">DemoController</text>
+  <text x="480" y="123" text-anchor="middle" font-size="13" fill="#3a4f7e">UI buttons + speed slider</text>
+
+  <rect x="360" y="240" width="240" height="84" rx="10" fill="#d7e9f3" stroke="#2b6f93" stroke-width="2.5"/>
+  <text x="480" y="270" text-anchor="middle" font-size="18" font-weight="700" fill="#1a4a63">TrainingManager</text>
+  <text x="480" y="292" text-anchor="middle" font-size="13" fill="#2c5d75">episode loop, visualization,</text>
+  <text x="480" y="310" text-anchor="middle" font-size="13" fill="#2c5d75">stats HUD</text>
+
+  <rect x="60" y="250" width="220" height="70" rx="10" fill="#dceaf7" stroke="#2b5d8c" stroke-width="2.5"/>
+  <text x="170" y="280" text-anchor="middle" font-size="18" font-weight="700" fill="#1a3a5c">QLearningAgent</text>
+  <text x="170" y="303" text-anchor="middle" font-size="13" fill="#33536e">Q-table, epsilon-greedy</text>
+
+  <rect x="680" y="250" width="220" height="70" rx="10" fill="#e3f3e1" stroke="#2f7d36" stroke-width="2.5"/>
+  <text x="790" y="280" text-anchor="middle" font-size="18" font-weight="700" fill="#1f5a26">GridEnvironment</text>
+  <text x="790" y="303" text-anchor="middle" font-size="13" fill="#37663d">states, actions, rewards</text>
+
+  <rect x="360" y="420" width="240" height="74" rx="10" fill="#d7e9f3" stroke="#2b6f93" stroke-width="2.5"/>
+  <text x="480" y="450" text-anchor="middle" font-size="18" font-weight="700" fill="#1a4a63">Evaluator</text>
+  <text x="480" y="472" text-anchor="middle" font-size="13" fill="#2c5d75">greedy policy, metrics</text>
+
+  <rect x="60" y="430" width="220" height="60" rx="10" fill="#f1e7f0" stroke="#7d2f6d" stroke-width="2.5"/>
+  <text x="170" y="466" text-anchor="middle" font-size="17" font-weight="700" fill="#5a1f4f">ChartRenderer</text>
+
+  <rect x="700" y="430" width="200" height="180" rx="10" fill="#fbf3da" stroke="#b8901f" stroke-width="2.5"/>
+  <text x="800" y="458" text-anchor="middle" font-size="16" font-weight="700" fill="#5e4a12">Output files</text>
+  <text x="800" y="492" text-anchor="middle" font-size="14" fill="#5e4a12">qtable.json</text>
+  <text x="800" y="522" text-anchor="middle" font-size="14" fill="#5e4a12">training_rewards.csv</text>
+  <text x="800" y="552" text-anchor="middle" font-size="14" fill="#5e4a12">evaluation_results.csv</text>
+  <text x="800" y="582" text-anchor="middle" font-size="14" fill="#5e4a12">learning_curve.png</text>
+
+  <path d="M480,140 L480,240" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="556" y="195" text-anchor="middle" font-size="12.5" fill="#444">Train / Reset / Run</text>
+
+  <path d="M360,290 L280,288" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="320" y="276" text-anchor="middle" font-size="12.5" fill="#444">selectAction</text>
+  <text x="320" y="332" text-anchor="middle" font-size="12.5" fill="#444">updateQ</text>
+
+  <path d="M600,285 L680,285" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="640" y="273" text-anchor="middle" font-size="12.5" fill="#444">step / reset</text>
+
+  <path d="M480,324 L480,420" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="540" y="375" text-anchor="middle" font-size="12.5" fill="#444">after training</text>
+
+  <path d="M360,300 L300,455" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <text x="300" y="400" text-anchor="middle" font-size="12.5" fill="#444">reward history</text>
+
+  <path d="M600,300 L700,470" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M600,460 L700,500" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+  <path d="M280,460 L320,520 L700,540" fill="none" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
+</svg>

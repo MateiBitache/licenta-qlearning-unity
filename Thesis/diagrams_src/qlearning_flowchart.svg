@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1080" viewBox="0 0 760 1080" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="1080" fill="#ffffff"/>
+  <defs>
+    <marker id="a" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <text x="380" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#1a1a2e">Q-Learning Algorithm</text>
+
+  <rect x="290" y="60" width="180" height="46" rx="23" fill="#e6e6ef" stroke="#555" stroke-width="2"/>
+  <text x="380" y="89" text-anchor="middle" font-size="16" font-weight="600" fill="#222">Start</text>
+
+  <rect x="230" y="140" width="300" height="54" rx="8" fill="#dceaf7" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="166" text-anchor="middle" font-size="15" fill="#1a3a5c">Initialize Q(s,a) = 0</text>
+  <text x="380" y="185" text-anchor="middle" font-size="15" fill="#1a3a5c">epsilon = 1.0</text>
+
+  <rect x="230" y="228" width="300" height="46" rx="8" fill="#dceaf7" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="256" text-anchor="middle" font-size="15" fill="#1a3a5c">Reset environment, s = start</text>
+
+  <rect x="230" y="308" width="300" height="46" rx="8" fill="#eef2f6" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="336" text-anchor="middle" font-size="15" fill="#1a3a5c">Choose action a (epsilon-greedy)</text>
+
+  <rect x="230" y="388" width="300" height="46" rx="8" fill="#eef2f6" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="416" text-anchor="middle" font-size="15" fill="#1a3a5c">Execute a, observe r and s'</text>
+
+  <rect x="170" y="468" width="420" height="66" rx="8" fill="#fbf3da" stroke="#b8901f" stroke-width="2"/>
+  <text x="380" y="495" text-anchor="middle" font-size="14" fill="#5e4a12">Q(s,a) = Q(s,a) + alpha *</text>
+  <text x="380" y="517" text-anchor="middle" font-size="14" fill="#5e4a12">[ r + gamma * max Q(s',a') - Q(s,a) ]</text>
+
+  <rect x="290" y="566" width="180" height="44" rx="8" fill="#eef2f6" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="593" text-anchor="middle" font-size="15" fill="#1a3a5c">s = s'</text>
+
+  <polygon points="380,640 540,690 380,740 220,690" fill="#f3e1ec" stroke="#8c2b6d" stroke-width="2"/>
+  <text x="380" y="685" text-anchor="middle" font-size="14" fill="#5c1a45">terminal state or</text>
+  <text x="380" y="704" text-anchor="middle" font-size="14" fill="#5c1a45">max steps?</text>
+
+  <rect x="230" y="772" width="300" height="46" rx="8" fill="#dceaf7" stroke="#2b5d8c" stroke-width="2"/>
+  <text x="380" y="800" text-anchor="middle" font-size="15" fill="#1a3a5c">Decay epsilon</text>
+
+  <polygon points="380,846 540,896 380,946 220,896" fill="#f3e1ec" stroke="#8c2b6d" stroke-width="2"/>
+  <text x="380" y="901" text-anchor="middle" font-size="14" fill="#5c1a45">all episodes done?</text>
+
+  <rect x="230" y="978" width="300" height="46" rx="8" fill="#e3f3e1" stroke="#2f7d36" stroke-width="2"/>
+  <text x="380" y="1006" text-anchor="middle" font-size="15" fill="#1f5a26">Save Q-table to file</text>
+
+  <path d="M380,106 L380,140" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,194 L380,228" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,274 L380,308" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,354 L380,388" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,434 L380,468" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,534 L380,566" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M380,610 L380,640" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+
+  <path d="M540,690 L640,690 L640,331 L530,331" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <text x="650" y="510" text-anchor="middle" font-size="14" font-weight="700" fill="#8c2b6d">No</text>
+
+  <path d="M380,740 L380,772" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <text x="398" y="762" text-anchor="middle" font-size="14" font-weight="700" fill="#2f7d36">Yes</text>
+
+  <path d="M380,818 L380,846" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+
+  <path d="M220,896 L110,896 L110,251 L230,251" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <text x="120" y="570" text-anchor="middle" font-size="14" font-weight="700" fill="#8c2b6d">No</text>
+
+  <path d="M380,946 L380,978" fill="none" stroke="#444" stroke-width="2" marker-end="url(#a)"/>
+  <text x="398" y="968" text-anchor="middle" font-size="14" font-weight="700" fill="#2f7d36">Yes</text>
+</svg>
